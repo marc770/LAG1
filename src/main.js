@@ -79,6 +79,7 @@ function buildPayload() {
 }
 
 btnGenerate.addEventListener('click', async () => {
+  stopCameraScan()
   const payload = buildPayload()
 
   // Add a prefix so we can validate it's ours
@@ -103,6 +104,7 @@ btnGenerate.addEventListener('click', async () => {
 })
 
 btnClear.addEventListener('click', () => {
+  stopCameraScan()
   qrImg.src = ''
   qrImg.style.display = 'none'
   qrOutput.textContent = ''
@@ -120,8 +122,6 @@ let cameraActive = false
 
 function stopCameraScan() {
   cameraActive = false
-
-  // Stop zxing if it has a reset method (depends on version)
   try { cameraReader?.reset?.() } catch (_) {}
 
   if (cameraStream) {
@@ -135,11 +135,16 @@ function stopCameraScan() {
     cameraVideoEl.remove()
     cameraVideoEl = null
   }
-
+  qrPreview.innerHTML = ''
   btnCameraScan.textContent = 'Scan QR'
 }
 
+
 async function startCameraScan() {
+
+  qrImg.style.display = 'none'
+  qrOutput.style.display = 'none'
+
   if (cameraActive) return
   cameraActive = true
   btnCameraScan.textContent = 'Stop scanning'
@@ -167,8 +172,6 @@ async function startCameraScan() {
     const decodedText = result.getText()
 
     console.log('QR scanned:', decodedText)
-
-    // ✅ Do what paste does (same handler)
     handleDecodedQR(decodedText)
 
     // ✅ Auto-stop after successful scan
@@ -185,43 +188,6 @@ async function startCameraScan() {
 btnCameraScan?.addEventListener('click', () => {
   if (cameraActive) stopCameraScan()
   else startCameraScan()
-})
-
-// --- PASTE QR IMAGE HANDLER ---
-// Paste a QR image anywhere in the page (Ctrl+V / Cmd+V)
-window.addEventListener('paste', (event) => {
-  const items = event.clipboardData?.items
-  if (!items) return
-
-  for (const item of items) {
-    if (!item.type.startsWith('image/')) continue
-
-    const blob = item.getAsFile()
-    if (!blob) return
-
-    const img = new Image()
-    img.onload = async () => {
-      try {
-        const reader = new BrowserQRCodeReader()
-
-        // ✅ robust: decode from an <img> element
-        const result = await reader.decodeFromImageElement(img)
-        const decodedText = result.getText()
-
-        console.log('Pasted QR:', decodedText)
-        handleDecodedQR(decodedText)
-      } catch (err) {
-        console.error('Failed to decode pasted QR:', err)
-        qrOutput.textContent = `Paste decode failed: ${String(err)}`
-        qrOutput.style.display = 'block'
-      } finally {
-        URL.revokeObjectURL(img.src)
-      }
-    }
-
-    img.src = URL.createObjectURL(blob)
-    return
-  }
 })
 
 // --- COMMON HANDLER FOR ANY DECODE ---
