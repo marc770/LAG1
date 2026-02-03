@@ -23,7 +23,7 @@ document.querySelector('#app').innerHTML = `
         </div>
         <div>
           <input type="text" id="ssnInput" />
-          <button id="counter" type="button"></button>
+          <button id="counter" type="button">Add</button>
         </div>
         <div>
           <textarea id="debugOutput" class="debug-output" readonly></textarea>
