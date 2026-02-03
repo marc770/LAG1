@@ -41,7 +41,6 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
-
 // Tab switching logic
 document.addEventListener('click', function (e) {
   if (e.target.classList.contains('tab-button')) {
@@ -99,11 +98,8 @@ function buildPayload() {
 btnGenerate.addEventListener('click', async () => {
   stopCameraScan()
   const payload = buildPayload()
-
-  // Add a prefix so we can validate it's ours
   const text = `HELLOPWA:${JSON.stringify(payload)}`
-
-  // EASY INSPECTION: show what we are encoding
+  // show what we are encoding
   qrOutput.textContent = text
   qrOutput.style.display = 'block'
 
@@ -175,24 +171,21 @@ async function startCameraScan() {
     cameraVideoEl.setAttribute('playsinline', 'true')
     cameraVideoEl.style.width = '240px'
     cameraVideoEl.style.marginTop = '10px'
-    qrPreview.innerHTML = '' // keep it tidy
+    qrPreview.innerHTML = ''
     qrPreview.appendChild(cameraVideoEl)
 
-    // Start camera
     cameraStream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: 'environment' },
     })
     cameraVideoEl.srcObject = cameraStream
     await cameraVideoEl.play()
 
-    // ✅ Decode ONCE and return
     const result = await cameraReader.decodeOnceFromVideoElement(cameraVideoEl)
     const decodedText = result.getText()
 
     console.log('QR scanned:', decodedText)
     handleDecodedQR(decodedText)
 
-    // ✅ Auto-stop after successful scan
     stopCameraScan()
   } catch (err) {
     console.error('Camera scan failed:', err)
@@ -202,25 +195,20 @@ async function startCameraScan() {
   }
 }
 
-// Toggle behavior (start/stop)
 btnCameraScan?.addEventListener('click', () => {
   if (cameraActive) stopCameraScan()
   else startCameraScan()
 })
 
-// --- COMMON HANDLER FOR ANY DECODE ---
 function handleDecodedQR(decodedText) {
   const prefix = 'HELLOPWA:'
   qrOutput.style.display = 'block'
-
-  // Always show the raw value somewhere first (optional)
-  // qrOutput.textContent = decodedText
 
   if (decodedText.startsWith(prefix)) {
     const jsonText = decodedText.slice(prefix.length)
     try {
       const obj = JSON.parse(jsonText)
-      console.log('Decoded JSON:', obj) // ✅ this is what you wanted
+      console.log('Decoded JSON:', obj)
 
       counterApi.setCount(obj.counter || counterApi.getCount())
       counterApi.setLog(obj.log || counterApi.getLog())
