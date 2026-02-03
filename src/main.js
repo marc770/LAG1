@@ -72,10 +72,11 @@ function buildPayload() {
     url: window.location.href,
 
     counter: counterApi.getCount(),
+    log: counterApi.getLog(),
 
     settings: { darkMode: true, volume: 0.8 },
     tags: ['pwa', 'vite', 'qrcode'],
-  }
+  };
 }
 
 btnGenerate.addEventListener('click', async () => {
