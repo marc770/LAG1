@@ -21,15 +21,15 @@ export default defineConfig({
         'icons/icon-512.png',
       ],
       manifest: {
-        name: 'HelloPWA',
-        short_name: 'HelloPWA',
+        name: 'Inräknad PWA',
+        short_name: 'Inräknad',
         start_url: '/',
         scope: '/',
 
         display: 'standalone',
         background_color: '#111111',
         theme_color: '#111111',
-        description: 'PWA built with Vite + Lit.',
+        description: 'KLIRR hackathon app for counting participants',
         icons: [
           { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
