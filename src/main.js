@@ -223,6 +223,8 @@ function handleDecodedQR(decodedText) {
     try {
       const obj = JSON.parse(jsonText)
       console.log('Decoded JSON:', obj) // ✅ this is what you wanted
+
+      counterApi.setCount(obj.counter || counterApi.getCount()  )
       qrOutput.textContent = JSON.stringify(obj, null, 2)
       return
     } catch (err) {
