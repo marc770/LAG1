@@ -6,8 +6,9 @@ export function setupCounter(element) {
   const setCount = (count) => {
     const prev = counter;
     counter = count;
-    log.push({ prev, next: counter, user: logId });
     element.innerHTML = `count is ${counter}`;
+    if (prev === 0 && counter === 0) return; // Skip logging initial state
+    log.push({ prev, next: counter, user: logId });
   };
 
    const setLog = (newLog) => {
