@@ -94,3 +94,51 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.qr-card {
+  margin-top: 1rem;
+}
+
+.qr-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.qr-img {
+  margin-top: 0.75rem;
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  display: none;
+}
+
+.qr-actions {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.qr-img {
+  margin-top: .75rem;
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  display: none;
+}
+
+.qr-output {
+  margin-top: .75rem;
+  text-align: left;
+  background: rgba(255,255,255,0.06);
+  padding: .75rem;
+  border-radius: 8px;
+  max-width: 520px;
+  overflow: auto;
+  font-size: 12px;
+  display: none;
+}
+
+
