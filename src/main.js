@@ -6,32 +6,52 @@ import { BrowserQRCodeReader } from '@zxing/browser'
 
 document.querySelector('#app').innerHTML = `
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${klirrLogo}" class="logo" alt="Klirr logo" />
-    </a>
-
-    <h1>Inräknad!</h1>
-
-    <div class="card">
-      <button id="counter" type="button"></button>
+    <div class="tabs">
+      <button class="tab-button active" data-tab="mission">Mission</button>
+      <button class="tab-button" data-tab="log">Log</button>
     </div>
+    <div class="tab-content" id="tab-mission">
+      <a href="https://vite.dev" target="_blank">
+        <img src="${klirrLogo}" class="logo" alt="Klirr logo" />
+      </a>
 
+      <h1>Inräknad!</h1>
 
-    <div class="card qr-card">
-      <div class="qr-actions">
-        <button id="btnGenerate" type="button">Generate QR</button>
-        <button id="btnCameraScan" type="button">Scan QR</button>
-
-        <button id="btnClear" type="button">Clear</button>
+      <div class="card">
+        <button id="counter" type="button"></button>
       </div>
 
-      <div id="qrPreview"></div>
-
-      <img id="qrImg" alt="QR Code" class="qr-img" />
-      <pre id="qrOutput" class="qr-output"></pre>
+      <div class="card qr-card">
+        <div class="qr-actions">
+          <button id="btnGenerate" type="button">Generate QR</button>
+          <button id="btnCameraScan" type="button">Scan QR</button>
+          <button id="btnClear" type="button">Clear</button>
+        </div>
+        <div id="qrPreview"></div>
+        <img id="qrImg" alt="QR Code" class="qr-img" />
+        <pre id="qrOutput" class="qr-output"></pre>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-log" style="display:none;">
+      <div class="card">
+        <h2>Log</h2>
+        <div id="logOutput">No log entries yet.</div>
+      </div>
     </div>
   </div>
 `
+
+
+// Tab switching logic
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('tab-button')) {
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    const tab = e.target.getAttribute('data-tab');
+    document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+    document.getElementById('tab-' + tab).style.display = '';
+  }
+});
 
 const counterApi = setupCounter(document.querySelector('#counter'))
 
