@@ -1,11 +1,12 @@
 export function setupCounter(element) {
   let counter = 0;
   let log = [];
+  const logId = crypto.randomUUID();
 
   const setCount = (count) => {
     const prev = counter;
     counter = count;
-    log.push({ prev, next: counter });
+    log.push({ prev, next: counter, user: logId });
     element.innerHTML = `count is ${counter}`;
   };
 
