@@ -24,15 +24,11 @@ document.querySelector('#app').innerHTML = `
     <div class="card qr-card">
       <div class="qr-actions">
         <button id="btnGenerate" type="button">Generate QR</button>
-        <button id="btnDecode" type="button">Decode QR</button>
-
-        <!-- ✅ ADD THIS -->
-        <button id="btnCameraScan" type="button">Scan with camera</button>
+        <button id="btnCameraScan" type="button">Scan QR</button>
 
         <button id="btnClear" type="button">Clear</button>
       </div>
 
-      <!-- ✅ OPTIONAL: where video preview will go -->
       <div id="qrPreview"></div>
 
       <img id="qrImg" alt="QR Code" class="qr-img" />
@@ -50,7 +46,6 @@ const counterApi = setupCounter(document.querySelector('#counter'))
 
 
 const btnGenerate = document.getElementById('btnGenerate')
-const btnDecode = document.getElementById('btnDecode')
 const btnClear = document.getElementById('btnClear')
 const qrImg = document.getElementById('qrImg')
 const qrOutput = document.getElementById('qrOutput')
@@ -96,36 +91,6 @@ btnGenerate.addEventListener('click', async () => {
   }
 })
 
-btnDecode.addEventListener('click', async () => {
-  if (!qrImg.src) return
-
-  try {
-    const reader = new BrowserQRCodeReader()
-
-    // Decode from the <img> element:
-    const result = await reader.decodeFromImageElement(qrImg)
-    const decodedText = result.getText()
-
-    // Show raw decoded text
-    qrOutput.textContent = decodedText
-    qrOutput.style.display = 'block'
-
-    // If it has our prefix, parse as JSON:
-    const prefix = 'HELLOPWA:'
-    if (decodedText.startsWith(prefix)) {
-      const jsonText = decodedText.slice(prefix.length)
-      const obj = JSON.parse(jsonText)
-
-      // Prettify JSON for inspection:
-      qrOutput.textContent = JSON.stringify(obj, null, 2)
-    }
-  } catch (err) {
-    console.error('Decode failed:', err)
-    qrOutput.textContent = `Decode failed: ${String(err)}`
-    qrOutput.style.display = 'block'
-  }
-})
-
 btnClear.addEventListener('click', () => {
   qrImg.src = ''
   qrImg.style.display = 'none'
@@ -133,44 +98,82 @@ btnClear.addEventListener('click', () => {
   qrOutput.style.display = 'none'
 })
 
-// --- CAMERA SCAN ---
+// --- CAMERA SCAN (auto-stop + reuse handleDecodedQR) ---
 const btnCameraScan = document.getElementById('btnCameraScan')
 const qrPreview = document.getElementById('qrPreview')
 
-btnCameraScan?.addEventListener('click', async () => {
-  let stream = null
-  let videoEl = null
+let cameraReader = null
+let cameraStream = null
+let cameraVideoEl = null
+let cameraActive = false
+
+function stopCameraScan() {
+  cameraActive = false
+
+  // Stop zxing if it has a reset method (depends on version)
+  try { cameraReader?.reset?.() } catch (_) {}
+
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop())
+    cameraStream = null
+  }
+
+  if (cameraVideoEl) {
+    cameraVideoEl.pause?.()
+    cameraVideoEl.srcObject = null
+    cameraVideoEl.remove()
+    cameraVideoEl = null
+  }
+
+  btnCameraScan.textContent = 'Scan QR'
+}
+
+async function startCameraScan() {
+  if (cameraActive) return
+  cameraActive = true
+  btnCameraScan.textContent = 'Stop scanning'
 
   try {
-    const reader = new BrowserQRCodeReader()
+    cameraReader = new BrowserQRCodeReader()
 
-    // Create and mount a video element in the card (not body)
-    videoEl = document.createElement('video')
-    videoEl.setAttribute('playsinline', 'true') // helps on iOS
-    videoEl.style.width = '240px'
-    videoEl.style.marginTop = '10px'
-    qrPreview.appendChild(videoEl)
+    // Create video element inside preview area
+    cameraVideoEl = document.createElement('video')
+    cameraVideoEl.setAttribute('playsinline', 'true')
+    cameraVideoEl.style.width = '240px'
+    cameraVideoEl.style.marginTop = '10px'
+    qrPreview.innerHTML = '' // keep it tidy
+    qrPreview.appendChild(cameraVideoEl)
 
-    // Ask for camera and attach stream manually so we can stop it
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-    videoEl.srcObject = stream
-    await videoEl.play()
+    // Start camera
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+    })
+    cameraVideoEl.srcObject = cameraStream
+    await cameraVideoEl.play()
 
-    // Decode once from the video element
-    const result = await reader.decodeOnceFromVideoElement(videoEl)
+    // ✅ Decode ONCE and return
+    const result = await cameraReader.decodeOnceFromVideoElement(cameraVideoEl)
     const decodedText = result.getText()
 
     console.log('QR scanned:', decodedText)
+
+    // ✅ Do what paste does (same handler)
     handleDecodedQR(decodedText)
+
+    // ✅ Auto-stop after successful scan
+    stopCameraScan()
   } catch (err) {
     console.error('Camera scan failed:', err)
     qrOutput.textContent = `Camera scan failed: ${String(err)}`
     qrOutput.style.display = 'block'
-  } finally {
-    // Stop camera
-    if (stream) stream.getTracks().forEach(t => t.stop())
-    if (videoEl) videoEl.remove()
+    stopCameraScan()
   }
+}
+
+// Toggle behavior (start/stop)
+btnCameraScan?.addEventListener('click', () => {
+  if (cameraActive) stopCameraScan()
+  else startCameraScan()
 })
 
 // --- PASTE QR IMAGE HANDLER ---
