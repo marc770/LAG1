@@ -9,6 +9,10 @@ export function setupCounter(element) {
     element.innerHTML = `count is ${counter}`;
   };
 
+   const setLog = (newLog) => {
+    log = newLog;
+  };
+
   element.addEventListener('click', () => setCount(counter + 1));
   setCount(0);
 
@@ -16,6 +20,7 @@ export function setupCounter(element) {
     getCount: () => counter,
     setCount,
     getLog: () => [...log],
+    setLog,
     clearLog: () => { log = []; },
   };
 }
