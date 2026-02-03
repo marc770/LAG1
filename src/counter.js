@@ -21,6 +21,5 @@ export function setupCounter(element) {
     setCount,
     getLog: () => [...log],
     setLog,
-    clearLog: () => { log = []; },
   };
 }

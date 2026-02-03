@@ -70,13 +70,6 @@ function renderClickLog() {
   logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ${entry.prev} → ${entry.next}`).join('<br>');
 }
 
-// Patch setCount to also update the log tab
-const origSetCount = counterApi.setCount;
-counterApi.setCount = function(count) {
-  origSetCount(count);
-  renderClickLog();
-};
-
 // Initial render
 renderClickLog();
 
@@ -230,7 +223,6 @@ function handleDecodedQR(decodedText) {
       console.log('Decoded JSON:', obj) // ✅ this is what you wanted
 
       counterApi.setCount(obj.counter || counterApi.getCount())
-      console.log('Restoring log:', obj.log)
       counterApi.setLog(obj.log || counterApi.getLog())
       renderClickLog();
       qrOutput.textContent = JSON.stringify(obj, null, 2)
