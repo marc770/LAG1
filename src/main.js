@@ -67,7 +67,7 @@ function renderClickLog() {
     logDiv.textContent = 'No log entries yet.';
     return;
   }
-  logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ${entry.prev} → ${entry.next}`).join('<br>');
+  logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ${entry.prev} → ${entry.next}, user: ${entry.user}`).join('<br>');
 }
 
 // Initial render
