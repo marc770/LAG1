@@ -1,5 +1,7 @@
-# LAG1
-KLIRR-Hack 2026
+# Demo version
+Please browse to [https://marc770.github.io/](https://marc770.github.io/)
+
+# Developer info
 
 To get started, first build the app with Docker.
 ```
@@ -11,4 +13,4 @@ Then run it.
 docker run --rm -p 4173:4173 my-pwa
 ```
 
-Finally, simply browse to localhost:4173
+Finally, simply browse to [localhost:4173](http://localhost:4173/)
