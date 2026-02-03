@@ -53,8 +53,32 @@ document.addEventListener('click', function (e) {
   }
 });
 
-const counterApi = setupCounter(document.querySelector('#counter'))
+const counterBtn = document.querySelector('#counter');
+const counterApi = setupCounter(counterBtn);
 
+// Ensure log updates on every click
+counterBtn.addEventListener('click', renderClickLog);
+
+// Helper to render the click log in the log tab
+function renderClickLog() {
+  const logDiv = document.getElementById('logOutput');
+  const log = counterApi.getLog();
+  if (!log.length) {
+    logDiv.textContent = 'No log entries yet.';
+    return;
+  }
+  logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ${entry.prev} → ${entry.next}`).join('<br>');
+}
+
+// Patch setCount to also update the log tab
+const origSetCount = counterApi.setCount;
+counterApi.setCount = function(count) {
+  origSetCount(count);
+  renderClickLog();
+};
+
+// Initial render
+renderClickLog();
 
 const btnGenerate = document.getElementById('btnGenerate')
 const btnClear = document.getElementById('btnClear')
@@ -72,10 +96,11 @@ function buildPayload() {
     url: window.location.href,
 
     counter: counterApi.getCount(),
+    log: counterApi.getLog(),
 
     settings: { darkMode: true, volume: 0.8 },
     tags: ['pwa', 'vite', 'qrcode'],
-  }
+  };
 }
 
 btnGenerate.addEventListener('click', async () => {
@@ -204,7 +229,10 @@ function handleDecodedQR(decodedText) {
       const obj = JSON.parse(jsonText)
       console.log('Decoded JSON:', obj) // ✅ this is what you wanted
 
-      counterApi.setCount(obj.counter || counterApi.getCount()  )
+      counterApi.setCount(obj.counter || counterApi.getCount())
+      console.log('Restoring log:', obj.log)
+      counterApi.setLog(obj.log || counterApi.getLog())
+      renderClickLog();
       qrOutput.textContent = JSON.stringify(obj, null, 2)
       return
     } catch (err) {
