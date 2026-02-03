@@ -8,7 +8,7 @@ document.querySelector('#app').innerHTML = `
   <div>
     <div class="tabs">
       <button class="tab-button active" data-tab="mission">Mission</button>
-      <button class="tab-button" data-tab="log">Log</button>
+      <button id="log-tab" class="tab-button" data-tab="log">Log</button>
     </div>
     <div class="tab-content" id="tab-mission">
       <a href="https://vite.dev" target="_blank">
@@ -66,9 +66,10 @@ const ssnInput = document.getElementById('ssnInput');
 const debugOutput = document.getElementById('debugOutput');
 const counterApi = setupCounter(counterBtn, ssnInput, debugOutput);
 
+document.getElementById("log-tab").onclick = function(event) {
+    renderClickLog();
+}
 
-// Ensure log updates on every click
-counterBtn.addEventListener('click', renderClickLog);
 
 // Helper to render the click log in the log tab
 function renderClickLog() {
@@ -78,11 +79,8 @@ function renderClickLog() {
     logDiv.textContent = 'No log entries yet.';
     return;
   }
-  logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ssn: ${entry.ssn}, user: ${entry.user}`).join('<br>');
+  logDiv.innerHTML = log.map((entry, i) => `#${i + 1}: ssn: ${entry.ssn}, user: ${entry.user}`).join('<br>');
 }
-
-// Initial render
-renderClickLog();
 
 const btnGenerate = document.getElementById('btnGenerate')
 const btnClear = document.getElementById('btnClear')
