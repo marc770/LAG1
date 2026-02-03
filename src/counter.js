@@ -1,14 +1,15 @@
-export function setupCounter(element) {
+export function setupCounter(element, ssnInput, debugOutput) {
   let counter = 0;
   let log = [];
   const logId = crypto.randomUUID();
+  let ssn = ssnInput;
+  let area = debugOutput;
 
   const setCount = (count) => {
-    const prev = counter;
-    counter = count;
-    element.innerHTML = `count is ${counter}`;
-    if (prev === 0 && counter === 0) return; // Skip logging initial state
-    log.push({ prev, next: counter, user: logId });
+    element.innerHTML = `add`;
+    // if (prev === 0 && counter === 0) return; // Skip logging initial state
+    area.value += ssn.value + '\n';
+    log.push({ ssn: ssn.value, user: logId });
   };
 
    const setLog = (newLog) => {

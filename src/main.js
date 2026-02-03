@@ -18,7 +18,16 @@ document.querySelector('#app').innerHTML = `
       <h1>Inräknad!</h1>
 
       <div class="card">
-        <button id="counter" type="button"></button>
+        <div>
+          <label>Social security number:</label>
+        </div>
+        <div>
+          <input type="text" id="ssnInput" />
+          <button id="counter" type="button"></button>
+        </div>
+        <div>
+          <textarea id="debugOutput" class="debug-output" readonly></textarea>
+        </div>
       </div>
 
       <div class="card qr-card">
@@ -53,7 +62,10 @@ document.addEventListener('click', function (e) {
 });
 
 const counterBtn = document.querySelector('#counter');
-const counterApi = setupCounter(counterBtn);
+const ssnInput = document.getElementById('ssnInput');
+const debugOutput = document.getElementById('debugOutput');
+const counterApi = setupCounter(counterBtn, ssnInput, debugOutput);
+
 
 // Ensure log updates on every click
 counterBtn.addEventListener('click', renderClickLog);
@@ -66,7 +78,7 @@ function renderClickLog() {
     logDiv.textContent = 'No log entries yet.';
     return;
   }
-  logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ${entry.prev} → ${entry.next}, user: ${entry.user}`).join('<br>');
+  logDiv.innerHTML = `<b>Click history:</b><br>` + log.map((entry, i) => `#${i + 1}: ssn: ${entry.ssn}, user: ${entry.user}`).join('<br>');
 }
 
 // Initial render
