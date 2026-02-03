@@ -1,0 +1,74 @@
+/* Optional: gives a stable centered column */
+.page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+/* Menu layout */
+.menu {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* The button style */
+.menu-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 16px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.04)
+  );
+
+  color: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  text-align: left;
+}
+
+.menu-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.06)
+  );
+}
+
+.menu-btn:active {
+  transform: translateY(0px) scale(0.995);
+}
+
+/* Accessible focus */
+.menu-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.45);
+}
+
+/* The little arrow */
+.menu-btn .chev {
+  opacity: 0.6;
+  font-size: 20px;
+  transform: translateY(-1px);
+}
+
+/* Muted text without inline style */
+.muted {
+  opacity: 0.7;
+  margin-top: 16px;
+}
