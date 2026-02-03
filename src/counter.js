@@ -6,8 +6,6 @@ export function setupCounter(element, ssnInput, debugOutput) {
   let area = debugOutput;
 
   const setCount = (count) => {
-    element.innerHTML = `add`;
-    // if (prev === 0 && counter === 0) return; // Skip logging initial state
     area.value += ssn.value + '\n';
     log.push({ ssn: ssn.value, user: logId });
   };
@@ -17,7 +15,6 @@ export function setupCounter(element, ssnInput, debugOutput) {
   };
 
   element.addEventListener('click', () => setCount(counter + 1));
-  setCount(0);
 
   return {
     getCount: () => counter,
