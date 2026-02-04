@@ -4,7 +4,7 @@ Please browse to [https://marc770.github.io/](https://marc770.github.io/)
 # High-level concept
 * The app contains crisis plans (**scenarios**).
 * The app uses public information/heartbeats about current power outages and internet loss + user input to figure out what scenario to activate
-* From a single installation, the app can be shared offline (LAN or bluetooth[^bluetooth]).
+* From a single installation, the app can be quickly be shared offline (LAN or bluetooth[^bluetooth]) without the need of app store, play store or remote servers.
 * The app distributes **missions** among the users.
 * All mission actions are logged by the app.
 * Users **synchronize** their logs by sharing JSON data through QR codes[^QR].
