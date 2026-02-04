@@ -7,12 +7,14 @@ Please browse to [https://marc770.github.io/](https://marc770.github.io/)
 * From a single installation, the app can be shared offline (LAN or bluetooth[^bluetooth]).
 * The app distributes **missions** among the users.
 * All mission actions are logged by the app.
-* Users **synchronize** their logs by sharing JSON data through QR codes.
+* Users **synchronize** their logs by sharing JSON data through QR codes[^QR].
 * Based on the logs, the app generates new missions until the scenario is completed.
 
 
 [^bluetooth]:
     Bluetooth can be used for native apps but not PWAs.
+[^QR]:
+    As the minimal, robust strategy that users are familiar enough with to use in a stressful situation. Less minimal stragies are used if they are available during the crisis.
 
 # Developer info
 
