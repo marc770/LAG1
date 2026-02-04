@@ -1,8 +1,18 @@
 import './style.css'
 import klirrLogo from '/klirr.png'
-import { setupCounter } from './counter.js'
+import { counterHtml, setupCounter } from './counter.js'
+import { noMissionHtml, setupNoMission } from './noMission.js'
 import QRCode from 'qrcode'
 import { BrowserQRCodeReader } from '@zxing/browser'
+
+
+function missionHtml() {
+    if (window.location.pathname === '/app.html') {    
+        return counterHtml();
+    } else {
+        return noMissionHtml();
+    }
+}
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -10,34 +20,9 @@ document.querySelector('#app').innerHTML = `
       <button class="tab-button active" data-tab="mission">Mission</button>
       <button id="log-tab" class="tab-button" data-tab="log">Log</button>
     </div>
-    <div class="tab-content" id="tab-mission">
-      <img src="${klirrLogo}" class="logo" alt="Klirr logo" />
-
-      <h1>Inräknad!</h1>
-
-      <div class="card">
-        <div>
-          <label>Social security number:</label>
-        </div>
-        <div>
-          <input type="text" id="ssnInput" />
-          <button id="counter" type="button">Add</button>
-        </div>
-        <div>
-          <textarea id="debugOutput" class="debug-output" readonly></textarea>
-        </div>
-      </div>
-
-      <div class="card qr-card">
-        <div class="qr-actions">
-          <button id="btnGenerate" type="button">Generate QR</button>
-          <button id="btnCameraScan" type="button">Scan QR</button>
-          <button id="btnClear" type="button">Clear</button>
-        </div>
-        <div id="qrPreview"></div>
-        <img id="qrImg" alt="QR Code" class="qr-img" />
-        <pre id="qrOutput" class="qr-output"></pre>
-      </div>
+      <div class="tab-content" id="tab-mission">
+        <img src="${klirrLogo}" class="logo" alt="Klirr logo" />
+        ${missionHtml()}
     </div>
     <div class="tab-content" id="tab-log" style="display:none;">
       <div class="card">
@@ -47,6 +32,14 @@ document.querySelector('#app').innerHTML = `
     </div>
   </div>
 `
+
+let missionApi;
+
+if (window.location.pathname === '/app.html') {    
+    missionApi = setupCounter();
+} else {
+    missionApi = setupNoMission();
+}
 
 // Tab switching logic
 document.addEventListener('click', function (e) {
@@ -59,12 +52,6 @@ document.addEventListener('click', function (e) {
   }
 });
 
-const counterBtn = document.querySelector('#counter');
-const ssnInput = document.getElementById('ssnInput');
-const debugOutput = document.getElementById('debugOutput');
-
-const counterApi = setupCounter(counterBtn, ssnInput, debugOutput);
-
 document.getElementById("log-tab").onclick = function(event) {
     renderClickLog();
 }
@@ -73,7 +60,7 @@ document.getElementById("log-tab").onclick = function(event) {
 // Helper to render the click log in the log tab
 function renderClickLog() {
   const logDiv = document.getElementById('logOutput');
-  const log = counterApi.getLog();
+  const log = missionApi.getLog();
   if (!log.length) {
     logDiv.textContent = 'No log entries yet.';
     return;
@@ -96,8 +83,8 @@ function buildPayload() {
     createdAt: new Date().toISOString(),
     url: window.location.href,
 
-    counter: counterApi.getCount(),
-    log: counterApi.getLog(),
+    counter: missionApi.getCount(),
+    log: missionApi.getLog(),
 
     settings: { darkMode: true, volume: 0.8 },
     tags: ['pwa', 'vite', 'qrcode'],
@@ -219,8 +206,8 @@ function handleDecodedQR(decodedText) {
       const obj = JSON.parse(jsonText)
       console.log('Decoded JSON:', obj)
 
-      counterApi.setCount(obj.counter || counterApi.getCount())
-      counterApi.setLog(obj.log || counterApi.getLog())
+      missionApi.setCount(obj.counter || missionApi.getCount())
+      missionApi.setLog(obj.log || missionApi.getLog())
       renderClickLog();
       qrOutput.textContent = JSON.stringify(obj, null, 2)
       return
