@@ -11,9 +11,7 @@ document.querySelector('#app').innerHTML = `
       <button id="log-tab" class="tab-button" data-tab="log">Log</button>
     </div>
     <div class="tab-content" id="tab-mission">
-      <a href="https://vite.dev" target="_blank">
-        <img src="${klirrLogo}" class="logo" alt="Klirr logo" />
-      </a>
+      <img src="${klirrLogo}" class="logo" alt="Klirr logo" />
 
       <h1>Inräknad!</h1>
 
@@ -64,6 +62,7 @@ document.addEventListener('click', function (e) {
 const counterBtn = document.querySelector('#counter');
 const ssnInput = document.getElementById('ssnInput');
 const debugOutput = document.getElementById('debugOutput');
+
 const counterApi = setupCounter(counterBtn, ssnInput, debugOutput);
 
 document.getElementById("log-tab").onclick = function(event) {
