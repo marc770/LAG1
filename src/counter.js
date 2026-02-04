@@ -29,9 +29,19 @@ export function setupCounter() {
   let ssn = ssnInput;
   let area = debugOutput;
 
+  // Sanitize user input to prevent XSS
+  function sanitize(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   const setCount = (count) => {
-    area.value += ssn.value + '\n';
-    log.push({ ssn: ssn.value, user: logId });
+    area.value += sanitize(ssn.value) + '\n';
+    log.push({ ssn: sanitize(ssn.value), user: sanitize(logId) });
   };
 
    const setLog = (newLog) => {
