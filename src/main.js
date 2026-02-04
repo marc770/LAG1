@@ -30,6 +30,16 @@ document.querySelector('#app').innerHTML = `
         <div id="logOutput">No log entries yet.</div>
       </div>
     </div>
+    <div class="card qr-card">
+      <div class="qr-actions">
+        <button id="btnGenerate" type="button">Generate QR</button>
+        <button id="btnCameraScan" type="button">Scan QR</button>
+        <button id="btnClear" type="button">Clear</button>
+      </div>
+      <div id="qrPreview"></div>
+      <img id="qrImg" alt="QR Code" class="qr-img" />
+      <pre id="qrOutput" class="qr-output"></pre>
+    </div>
   </div>
 `
 
