@@ -45,6 +45,32 @@ Post- och telestyrelsens regler: operatörer måste ha reservkraft i 4 timmar. D
 * SVT Norrbotten, 4-5 januari 2024
 * Älvsbyns kommun
 
+## 2. STORMEN JOHANNES, DECEMBER 2025: TUSENTALS I DYGNSAVBROTT
+
+**Vad hände:**
+
+* 27 december 2025 (för en månad sedan)
+* 40 000+ hushåll utan ström i Sverige
+* 3 döda (träffade av fallande träd)
+* VMA utlyst i flera län
+* Vindbyar upp till 47 m/s
+* Träd över vägar och elledningar
+* 10 miljoner kubikmeter skog fälld
+
+**Varför det spelar roll:**
+
+Återkommande problem. Vinterstormar är inte undantag - de är regeln. Lagen säger 24 timmar max, men det händer ändå varje år.
+
+**Konsekvens:**
+
+Enligt ellagen får avbrott inte överstiga 24 timmar. Men 2024: 6 450 kunder drabbades. Ingen tydlig påföljd för företag som bryter mot regeln.
+
+**Källor:**
+
+* SMHI, december 2025
+* SVT, december 2025
+* Energimarknadsinspektionen (Ei)
+
 # Developer info
 
 To get started, first build the app with Docker.
