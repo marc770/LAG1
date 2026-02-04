@@ -16,6 +16,35 @@ Please browse to [https://marc770.github.io/](https://marc770.github.io/)
 [^QR]:
     As the minimal, robust strategy that users are familiar enough with to use in a stressful situation. Less minimal stragies are used if they are available during the crisis.
 
+# Scenario examples
+
+## 1. ÄLVSBYN, JANUARI 2024: NÄR BÅDE EL OCH TELEFONI DÖR
+
+**Vad hände:**
+
+* 4 januari 2024,
+* -40°C
+* Transformatorbrand → 4 000+ hushåll utan el
+* Efter 4 timmar: Telias reservkraft slut → ingen mobiltäckning
+* Krisledningen i kommunen: inget sätt att nå varandra
+* Hemtjänstens trygghetslarm: döda
+* Befolkningen: isolerad
+* Bensinpumpar: fungerade inte (elavbrott)
+
+**Varför det spelar roll:**
+
+Post- och telestyrelsens regler: operatörer måste ha reservkraft i 4 timmar. Det räckte inte. När både el och telefoni dog samtidigt kollapsade kommunikationen helt.
+
+**Citat från krisledningen:**
+
+“Det tog tid att mobilisera sig när telefoni och annan kommunikation låg nere.”
+
+**Källor:**
+
+* Riksdagen, Interpellation 2023/24:360
+* SVT Norrbotten, 4-5 januari 2024
+* Älvsbyns kommun
+
 # Developer info
 
 To get started, first build the app with Docker.
