@@ -5,7 +5,7 @@
 }
 .tab-button {
   padding: 0.5em 1.5em;
-  background: #4b4b4b;
+  background: #adadad;
   border: none;
   border-radius: 8px 8px 0 0;
   border: 1px solid transparent;
@@ -13,10 +13,11 @@
   font-size: 1.1em;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
+  color: #1b3e3b;
 }
 .tab-button.active {
   border-color: #646cff;
-  background: #847f70;
+  background: #9c9c9b;
 }
 .tab-content {
   display: block;
