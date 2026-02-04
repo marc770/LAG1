@@ -62,6 +62,16 @@ document.addEventListener('click', function (e) {
   }
 });
 
+// Sanitize user input to prevent XSS
+function sanitize(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 document.getElementById("log-tab").onclick = function(event) {
     renderClickLog();
 }
@@ -75,7 +85,7 @@ function renderClickLog() {
     logDiv.textContent = 'No log entries yet.';
     return;
   }
-  logDiv.innerHTML = log.map((entry, i) => `#${i + 1}: ssn: ${entry.ssn}, user: ${entry.user}`).join('<br>');
+  logDiv.innerHTML = log.map((entry, i) => `#${i + 1}: ssn: ${sanitize(entry.ssn)}, user: ${sanitize(entry.user)}`).join('<br>');
 }
 
 const btnGenerate = document.getElementById('btnGenerate')
